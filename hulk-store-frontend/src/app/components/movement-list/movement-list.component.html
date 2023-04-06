@@ -1,0 +1,86 @@
+<div class="container-fluid">
+
+    <app-header></app-header>
+
+    <!-- Page title -->
+
+    <nav class="navbar navbar-expand-md breadcrumb">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav nav-pills">
+                <strong>Movimientos</strong>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="products">
+
+            <div class="mb-3">
+                <div class="btn-group mr-2">
+                    <button type="button" (click)="goToHomePage()" class="btn btn-secondary">Volver al inicio</button>
+                </div>
+            </div>
+
+            <div *ngIf="loading" class="clearfix">
+                Cargando ...
+            </div>
+
+            <div class="mb-3">
+                <div class="text-right">
+                    Filtar por producto: 
+                    <select [(ngModel)]="selectedProductId" (change)="onChangeProduct()">
+                        <option></option>
+                        <option *ngFor="let product of allProducts" [value]="product.id">{{ product.code }} - {{ product.name }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="table table-sm table-bordered" *ngIf="!loading">
+
+                <thead class="thead-dark">
+                    <tr class="text-center">
+                        <th scope="column">Fecha</th>
+                        <th scope="column">C&oacute;digo</th>
+                        <th scope="column">Nombre</th>
+                        <th scope="column">Franquicia</th>
+                        <th scope="column">Categor&iacute;a</th>
+                        <th scope="column">Tipo</th>
+                        <th scope="column">Cantidad</th>
+                        <th scope="column">Precio</th>
+                        <th scope="column">Subtotal</th>
+                        <th scope="column">Observaciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let item of movementListItems" class="text-center">
+                        <td>{{ item.movement?.createdAt | date:'dd/MM/yy h:mm a' }}</td>
+                        <td>{{ item.product?.code }}</td>
+                        <td class="text-left">{{ item.product?.name }}</td>
+                        <td>{{ item.product?.franchise?.name }}</td>
+                        <td>{{ item.product?.category?.name }}</td>
+                        <td *ngIf="item.movement.type === 'INCOMINGS'">ENTRADA</td>
+                        <td *ngIf="item.movement.type === 'OUTGOINGS'">SALIDA</td>
+                        <td class="text-right">{{ item.movement.quantity }}</td>
+                        <td class="text-right">{{ item.movement.price }}</td>
+                        <td class="text-right">{{ item.movement.price * item.movement.quantity }}</td>
+                        <td>{{ item.movement.observation }}</td>
+                    </tr>
+
+                    <tr *ngIf="movementListItems?.length === 0">
+                        <td colspan="10">No hay movimientos registrados</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

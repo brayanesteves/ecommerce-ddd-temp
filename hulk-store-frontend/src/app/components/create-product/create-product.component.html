@@ -1,0 +1,127 @@
+<div class="container">
+
+    <app-header></app-header>
+
+    <!-- Page title -->
+
+    <nav class="navbar navbar-expand-md breadcrumb">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav nav-pills">
+                <strong>Crear producto</strong>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+
+    <div class="tab-content mt-3">
+
+        <div *ngIf="loading">
+            Cargando ...
+        </div>
+
+        <div *ngIf="!loading">
+
+            <form [formGroup]="createProductForm">
+
+                <!-- Category -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="category">Categor&iacute;a:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select formControlName="category" class="form-control" id="category">
+                            <option></option>
+                            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('category')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Trademark -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="franchise">Franquicia:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select formControlName="franchise" class="form-control" id="franchise">
+                            <option></option>
+                            <option *ngFor="let franchise of franchises" [value]="franchise.id">{{ franchise.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('franchise')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Code -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="code">C&oacute;digo:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input formControlName="code" class="form-control" id="code" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('code')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Nombre -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="name">Nombre:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input formControlName="name" class="form-control" id="name" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('name')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Precio de compra -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="purchasePrice">Precio de compra:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" formControlName="purchasePrice" class="form-control" id="purchasePrice" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('purchasePrice')" class="error">Campo es obligatorio</span>
+                        <span *ngIf="isNotGreaterThanZero('purchasePrice')" class="error">Campo debe ser mayor a cero</span>
+                    </div>
+                </div>
+
+                <!-- Precio de venta -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="sellingPrice">Precio de venta:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" formControlName="sellingPrice"  class="form-control" id="sellingPrice" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('sellingPrice')" class="error">Campo es obligatorio</span>
+                        <span *ngIf="isNotGreaterThanZero('sellingPrice')" class="error">Campo debe ser mayor a cero</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <button type="button" (click)="saveProduct()" *ngIf="!isEditingAnExistingProduct()" class="btn btn-dark">Guardar</button>
+                        <button type="button" (click)="updateProduct()" *ngIf="isEditingAnExistingProduct()" class="btn btn-dark">Actualizar</button>
+                        <button type="button" (click)="goToProductList()" class="btn btn-secondary ml-3">Cancelar</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

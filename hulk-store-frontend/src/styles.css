@@ -1,0 +1,12 @@
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+table tbody tr td {
+    font-size: 14px;
+}
+
+.clearfix {
+    clear: both;
+}

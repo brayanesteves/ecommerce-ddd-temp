@@ -1,0 +1,139 @@
+<div class="container">
+
+    <app-header></app-header>
+
+    <!-- Page title -->
+
+    <nav class="navbar navbar-expand-md breadcrumb">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav nav-pills">
+                <strong>Registrar movimiento</strong>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+
+    <div class="tab-content mt-3">
+
+        <div *ngIf="loading">
+            Cargando ...
+        </div>
+
+        <div *ngIf="!loading">
+
+            <form [formGroup]="registerMovementForm">
+
+                <!-- Type -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="movementType">Tipo de movimiento:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select formControlName="movementType" class="form-control" id="movementType" (change)="onchangeMovementType()">
+                            <option value="INCOMINGS">Entrada de inventario</option>
+                            <option value="OUTGOINGS">Salida de inventario</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('movementType')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Code -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="code">C&oacute;digo del producto:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input formControlName="code" class="form-control" id="code" autocomplete="off" [readonly]="true">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('code')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Name -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="name">Nombre del producto:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input formControlName="name" class="form-control" id="name" autocomplete="off" [readonly]="true">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('name')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <!-- Unit price -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="unitPrice" *ngIf="this.registerMovementForm.get('movementType').value === 'INCOMINGS'">Precio de compra:</label>
+                        <label for="unitPrice" *ngIf="this.registerMovementForm.get('movementType').value === 'OUTGOINGS'">Precio de venta:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" formControlName="unitPrice" class="form-control" id="unitPrice" (change)="onChangeQuantityOrUnitPrice()">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('unitPrice')" class="error">Campo es obligatorio</span>
+                        <span *ngIf="isNegative('unitPrice')" class="error">Campo no puede ser negativo</span>
+                    </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="quantity" *ngIf="this.registerMovementForm.get('movementType').value === 'INCOMINGS'">Cantidad que ingresa:</label>
+                        <label for="quantity" *ngIf="this.registerMovementForm.get('movementType').value === 'OUTGOINGS'">Cantidad que sale:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" formControlName="quantity" class="form-control" id="quantity" (change)="onChangeQuantityOrUnitPrice()">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('quantity')" class="error">Campo es obligatorio</span>
+                        <span *ngIf="isNegative('quantity')" class="error">La cantidad no puede ser cero o negativa</span>
+                    </div>
+                </div>
+
+                <!-- Subtotal -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="subtotal">Subtotal:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" formControlName="subTotal" class="form-control" id="subtotal" [readonly]="true">
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('subTotal')" class="error">Campo es obligatorio</span>
+                        <span *ngIf="isNegative('subTotal')" class="error">Campo no puede ser negativo</span>
+                    </div>
+                </div>
+
+                <!-- Observations -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label for="observation">Observaciones:</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <textarea formControlName="observation" class="form-control" id="observation"></textarea>
+                    </div>
+                    <div class="col-sm-4">
+                        <span *ngIf="isEmpty('observation')" class="error">Campo es obligatorio</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <button type="button" (click)="save()" class="btn btn-dark">Guardar</button>
+                        <button type="button" (click)="cancel()" class="btn btn-secondary ml-3">Cancelar</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,90 @@
+<div class="container-fluid">
+
+    <app-header></app-header>
+
+    <!-- Page title -->
+
+    <nav class="navbar navbar-expand-md breadcrumb">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav nav-pills">
+                <strong>Inventario actual</strong>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="products">
+
+            <div class="mb-3 float-left">
+                <div class="btn-group mr-2">
+                    <button type="button" (click)="goToCreateProduct()" class="btn btn-secondary">+ Crear producto</button>
+                    <button type="button" (click)="goToMovementList()" class="btn btn-secondary ml-2">Ver todos los movimientos</button>
+                </div>
+            </div>
+
+            <div *ngIf="loading" class="clearfix">
+                Cargando ...
+            </div>
+
+            <div class="mb-3">
+                <div class="text-right">
+                    Filtar por franquicia: 
+                    <select [(ngModel)]="selectedFranchiseId" (change)="onChangeSelectedFranchise()">
+                        <option></option>
+                        <option *ngFor="let franchise of franchises" [value]="franchise.id">{{ franchise.name }}</option> 
+                    </select>
+                    <label class="ml-3">Filtar por categoria: </label>
+                    <select [(ngModel)]="selectedCategoryId" (change)="onChangeSelectecCategory()">
+                        <option></option>
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option> 
+                    </select>
+                </div>
+            </div>
+
+            <table class="table table-bordered" *ngIf="!loading">
+
+                <thead class="thead-dark">
+                    <tr class="text-center">
+                        <th scope="column">C&oacute;digo</th>
+                        <th scope="column">Nombre</th>
+                        <th scope="column">Franquicia</th>
+                        <th scope="column">Categor&iacute;a</th>
+                        <th scope="column">Entradas</th>
+                        <th scope="column">Salidas</th>
+                        <th scope="column">En stock</th>
+                        <th scope="column">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let item of inventoryItems">
+                        <td>{{ item.product?.code }}</td>
+                        <td>{{ item.product?.name }}</td>
+                        <td>{{ item.product?.franchise?.name }}</td>
+                        <td>{{ item.product?.category?.name }}</td>
+                        <td class="text-right">{{ item.incomings }}</td>
+                        <td class="text-right">{{ item.outgoings }}</td>
+                        <td class="text-right">{{ item.inStock() }}</td>
+                        <td class="text-center">
+                            <em (click)="goToEditProduct( item.product )" class="fa fa-2x fa-pencil-alt mr-3" title="Ver detalle del producto"></em>
+                            <em (click)="goToRegisterMovement( item )" class="fa fa-2x fa-comments-dollar" title="Registrar movimiento de entrada/salida"></em>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="inventoryItems?.length === 0">
+                        <td colspan="8">No hay productos registrados</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
